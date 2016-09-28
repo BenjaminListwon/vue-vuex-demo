@@ -6,23 +6,36 @@ const debug = process.env.NODE_ENV !== 'production'
 Vue.use(Vuex)
 Vue.config.debug = debug
 
+// Bring in our constants (that we need in this file)
+import { SET_CLIENT_ID } from './mutation-constants'
+
 // Here's where we import the messages module
 import messages from './modules/messages'
 
 export default new Vuex.Store({
 
   state: {
-    messages: []
+    clientId: null
   },
 
   actions: {
-    newMessage ({commit}, msg) {
-      commit('NEW_MESSAGE', msg)
+    setClientId ({commit, state}, id) {
+      commit(SET_CLIENT_ID, id)
     }
   },
 
-  // We've moved the mutation out to the module
-  mutations: {},
+  getters: {
+    getClientId: (state) => {
+      return state.clientId
+    }
+  },
+
+  // We've moved most of the mutations out to the module(s)
+  mutations: {
+    [SET_CLIENT_ID] (state, id) {
+      state.clientId = id
+    }
+  },
 
   // This is where the messages module gets added to the Vuex store
   modules: {

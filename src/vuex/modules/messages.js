@@ -1,9 +1,12 @@
+// Bring in our constants (that we need in this file)
+import { NEW_MESSAGE, LOAD_MESSAGES } from '../mutation-constants'
+
 // Initial state of our messages collection
 const state = {
   items: [
     {
-        text: "Welcome to vuex chat!", 
-        sender: "Vue.js"
+      text: 'Welcome to vuex chat!',
+      sender: 'Vue.js'
     }
   ]
 }
@@ -15,12 +18,28 @@ const state = {
 const mutations = {
   // Our new message mutation now acts on _this module's_ state, not the root
   // state, reflected in the path below.
-  NEW_MESSAGE (state, msg) {
+  [NEW_MESSAGE] (state, msg) {
     state.items.push(msg)
+  },
+  [LOAD_MESSAGES] (state, toLoad) {
+    state.items = toLoad
+  }
+}
+
+const actions = {
+  newMessage ({commit}, msg) {
+    commit(NEW_MESSAGE, msg)
+  },
+  loadMessages ({commit}, toLoad) {
+    commit(LOAD_MESSAGES, toLoad)
+  },
+  resetMessages ({commit}) {
+    commit(LOAD_MESSAGES, [])
   }
 }
 
 export default {
   state,
-  mutations
+  mutations,
+  actions
 }
