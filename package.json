@@ -16,6 +16,7 @@
     ]
   },
   "dependencies": {
+    "local-storage": "^1.4.2",
     "vue": "^2.0.0-rc.7",
     "vuex": "^2.0.0-rc.6"
   },

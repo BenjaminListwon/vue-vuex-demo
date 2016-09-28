@@ -35,7 +35,6 @@ export default {
     getMessages() {
       return this.messages.slice(0).reverse()
     },
-
     trySendMessage() { 
       this.newMessage({
         text: this.msg, 

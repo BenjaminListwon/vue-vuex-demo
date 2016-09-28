@@ -12,15 +12,41 @@
         <client clientid="Client B"></client>
       </div>
     </div>
+    <admin></admin>
+    <button @click="temp = 'cats'">click</button>
   </div>
 </template>
 
 <script>
+import ls from 'local-storage'
+
 import Client from './components/Client.vue'
+import Admin from './components/Admin.vue'
+
+import { mapState } from 'vuex'
 
 export default {
   components: {
-    Client
+    Client,
+    Admin
+  },
+  data() {
+    return {
+      temp: 'TEMP'
+    }
+  },
+  computed: {
+    ...mapState({
+      messages: ({messages}) => messages.items
+    })
+  },
+  watch: {
+    messages() {
+      ls.set('messages', this.messages)
+    }
+  },
+  mounted() {
+    ls.on('messages', function() { console.log(ls.get('messages')); } );
   }
 }
 </script>
