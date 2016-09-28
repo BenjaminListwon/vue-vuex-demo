@@ -2,6 +2,17 @@
   "name": "using-vuex",
   "description": "A Vue.js project",
   "author": "Benjamin Listwon <blistwon@mac.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BenjaminListwon/vue-vuex-demo.git"
+  },
+  "license": "MIT",
+  "keywords": [
+    "vue",
+    "vuex",
+    "vue.js",
+    "demo"
+  ],
   "scripts": {
     "watchify": "watchify -vd -p browserify-hmr -e src/main.js -o dist/build.js",
     "serve": "http-server -c 1 -a localhost",

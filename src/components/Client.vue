@@ -1,3 +1,14 @@
+<!-- 
+The Client component and template have changed / grown quite
+a bit since last time.
+
+Of note in the template:
+- clientId is now a reference to a local computed property, not
+  the prop we used to pass in
+- We've added a :class binding to toggle styles
+- A few of the variable names have been cleaned up to make more 
+  sense
+-->
 <template>
   <div>
     <header>
@@ -19,22 +30,46 @@
   </div>
 </template>
 
+<!-- 
+Lots to talk abou in the component spec. The major topics are
+that most of the app business logic takes place in this component,
+though using many different strategies.
+
+In the blog post, we'll cover:
+- mixins
+- using methods vs computed props
+- the watch observer versus mapping store.state
+- the mounted lifecycle hook
+- local storage
+-->
 <script>
+// A mixin that encapsulates our use of local-storage
 import { localStorageMixin } from '../mixins/local-storage-mixin'
+
+// A mixin for message prep, will grow in examples to come
 import { messageMixin } from '../mixins/message-mixin'
+
+// Our shared state stuff, as usual
 import { mapState, mapActions } from 'vuex'
 
 export default {
 
+  // Here's how to add mixins to a single-file vue component. Easier than
+  // just about everything I've read online.
   mixins: [localStorageMixin, messageMixin],
 
+  // Some local data that we don't need to share with other compnents
+  // userMessage is the input v-model
+  // alternateFont is a boolean we use to toggle our :class binding
   data () {
     return {
       userMessage: '',
       alternateFont: false
     }
   },
-  
+
+  // Almost identical to the previous version, but we moved clientId
+  // into store.state for easy access
   computed: {
     ...mapState({
       messages: ({messages}) => messages.items,
@@ -44,7 +79,7 @@ export default {
 
   methods: {
 
-    // Defining a method to return the collection of messages allows us to 
+    // Defining a method to return the collection of messages allows us to
     // reverse the collection (which would violate mutation rules if done
     // in a computed property), so we can diplay the messages in reverse
     // order, like a chat window would.
@@ -52,10 +87,9 @@ export default {
       return this.messages.slice(0).reverse()
     },
 
-    // Here we call this trySendMessage because ideally we'd try-catch the 
+    // Here we call this trySendMessage because ideally we'd try-catch the
     // various operations, rolling back or retrying whenever something fails.
     trySendMessage () {
-
       // Our message payload
       let msg = this.bundleMessage(this.userMessage, this.clientId)
 
@@ -70,7 +104,7 @@ export default {
     },
 
     // Simply empties the input for now
-    clearUserMessage() {
+    clearUserMessage () {
       this.userMessage = ''
     },
 
@@ -90,7 +124,7 @@ export default {
 
     // Toggle the alternate font class
     changeFont () {
-      this.alternateFont = this.alternateFont ? false : true
+      this.alternateFont = this.alternateFont ? false : true // eslint-disable-line no-unneeded-ternary
     },
 
     // Set the page title to reflect changes in the clientId
@@ -121,6 +155,12 @@ export default {
 }
 </script>
 
+<!-- 
+Styles for this component
+
+The wacky flexbox stuff is to get the chat messages to align bottom
+and scroll up.
+-->
 <style scoped>
 header span {
   color: #00f;
